@@ -37,7 +37,7 @@ require "minitest/autorun"
 if defined?(SQLite3)
   db_config = {
     adapter: "sqlite3",
-    database: "test/dummy_app/db/test.sqlite3",
+    database: "db/test.sqlite3",
   }
 elsif defined?(Mysql2)
   db_config = {
