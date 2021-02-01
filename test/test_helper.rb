@@ -67,7 +67,7 @@ else
 end
 
 [Post].each do |klass|
-  if defined?(Sqlite3)
+  if defined?(SQLite3)
     ActiveRecord::Base.connection.execute("DELETE FROM #{klass.table_name};")
     ActiveRecord::Base.connection.execute("UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = '#{klass.table_name}';")
   else
