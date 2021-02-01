@@ -55,7 +55,9 @@ jobs:
       env:
         DATABASE_URL: mysql2://root:password@127.0.0.1:3306/test
         RAILS_ENV: test
-      run: bundle exec rake
+      run: |
+        #bundle exec rake db:test:prepare
+        bundle exec rake
 
   test_pg:
     runs-on: ubuntu-20.04
@@ -109,7 +111,7 @@ jobs:
         RAILS_ENV: test
       run: |
         #bundle exec rails db:test:prepare
-        bundle exec rails test
+        bundle exec rake
 
   test_sqlite:
     runs-on: ubuntu-20.04
@@ -124,6 +126,20 @@ jobs:
         - ruby: 2.6
         - ruby: 2.7
         - ruby: 3.0
+
+        ### RAILS VERSION TESTING
+        - ruby: 2.6
+          gemfile: gemfiles/rails-4.2.sqlite3
+        - ruby: 2.6
+          gemfile: gemfiles/rails-5.0.sqlite3
+        - ruby: 2.6
+          gemfile: gemfiles/rails-5.1.sqlite3
+        - ruby: 2.6
+          gemfile: gemfiles/rails-5.2.sqlite3
+        - ruby: 2.6
+          gemfile: gemfiles/rails-6.0.sqlite3
+        - ruby: 2.6
+          gemfile: gemfiles/rails-6.1.sqlite3
 
     env:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
@@ -143,5 +159,5 @@ jobs:
 
     - name: Run tests
       run: |
-        #bundle exec rails db:test:prepare
-        bundle exec rails test
+        #bundle exec rake db:test:prepare
+        bundle exec rake
