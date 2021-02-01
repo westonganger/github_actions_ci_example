@@ -3,6 +3,16 @@ ENV["RAILS_ENV"] = "test"
 
 require "active_sort_order"
 
+begin
+  require 'warning'
+
+  Warning.ignore(
+    %r{mail/parsers/address_lists_parser}, ### Hide mail gem warnings
+  )
+rescue LoadError
+  # Do nothing
+end
+
 ### Instantiates Rails
 require File.expand_path("../dummy_app/config/environment.rb",  __FILE__)
 
@@ -24,7 +34,7 @@ Minitest::Reporters.use!(
 
 require "minitest/autorun"
 
-if defined?(Sqlite3)
+if defined?(SQLite3)
   db_config = {
     adapter: "sqlite3",
     database: "test/dummy_app/db/test.sqlite3",
