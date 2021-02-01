@@ -16,24 +16,6 @@ end
 ### Instantiates Rails
 require File.expand_path("../dummy_app/config/environment.rb",  __FILE__)
 
-require "rails/test_help"
-
-class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
-end
-
-Rails.backtrace_cleaner.remove_silencers!
-
-require 'minitest/reporters'
-Minitest::Reporters.use!(
-  Minitest::Reporters::DefaultReporter.new,
-  ENV,
-  Minitest.backtrace_filter
-)
-
-require "minitest/autorun"
-
 if defined?(SQLite3)
   db_config = {
     adapter: "sqlite3",
@@ -58,6 +40,24 @@ elsif defined?(PG)
 end
 
 ActiveRecord::Base.establish_connection(db_config.with_indifferent_access)
+
+require "rails/test_help"
+
+class ActiveSupport::TestCase
+  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+  fixtures :all
+end
+
+Rails.backtrace_cleaner.remove_silencers!
+
+require 'minitest/reporters'
+Minitest::Reporters.use!(
+  Minitest::Reporters::DefaultReporter.new,
+  ENV,
+  Minitest.backtrace_filter
+)
+
+require "minitest/autorun"
 
 # Run any available migration
 if ActiveRecord.gem_version >= Gem::Version.new("6.0")
