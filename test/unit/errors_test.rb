@@ -30,7 +30,7 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
     ]
 
     if RUBY_VERSION.to_f >= 3.0
-      bad_directions << {}
+      invalid << {}
     end
 
     invalid.each do |v|
@@ -56,7 +56,7 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
   end
 
   def test_sort_direction_errors
-    valid_directions = [
+    valid = [
       "ASC",
       "DESC",
       "ASC NULLS FIRST",
@@ -73,7 +73,7 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
       "ASC\tNULLS\tFirst",
     ].freeze
 
-    valid_directions.each do |direction|
+    valid.each do |direction|
       PostWithBaseOrderA.sort_order("x", direction).limit(1)
 
       if direction
@@ -87,7 +87,7 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
       end
     end
 
-    bad_directions = [
+    invalid = [
       false,
       true,
       Object.new,
@@ -96,10 +96,10 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
     ]
 
     if RUBY_VERSION.to_f >= 3.0
-      bad_directions << {}
+      invalid << {}
     end
 
-    bad_directions.each do |direction|
+    invalid.each do |direction|
       assert_raise ArgumentError do
         PostWithBaseOrderA.sort_order("foobar", direction).limit(1)
       end

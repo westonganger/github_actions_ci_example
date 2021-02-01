@@ -45,7 +45,7 @@ elsif defined?(Mysql2)
     database: "active_sort_order_test",
     host: "localhost",
     username: "root",
-    password: "root123",
+    password: "password",
   }
 elsif defined?(PG)
   db_config = {
@@ -57,7 +57,7 @@ elsif defined?(PG)
   }
 end
 
-ActiveRecord::Base.establish_connection(db_config)
+ActiveRecord::Base.establish_connection(db_config.with_indifferent_access)
 
 # Run any available migration
 if ActiveRecord.gem_version >= Gem::Version.new("6.0")
