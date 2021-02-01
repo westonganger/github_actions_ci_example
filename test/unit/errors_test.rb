@@ -29,6 +29,10 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
       Object.new,
     ]
 
+    if RUBY_VERSION.to_f >= 3.0
+      bad_directions << {}
+    end
+
     invalid.each do |v|
       assert_raise ArgumentError do
         Post.sort_order(v, :asc).limit(1)
@@ -41,11 +45,13 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
 
     ### TEST UNIQUE CASES
 
-    ### HASH - this is allowed because its treated as keyword arguments
-    Post.sort_order({}).limit(1)
+    if RUBY_VERSION.to_f < 3.0
+      ### HASH - this is allowed because its treated as keyword arguments
+      Post.sort_order({}).limit(1)
 
-    assert_raise do
-      Post.sort_order({}, :desc).limit(1)
+      assert_raise do
+        Post.sort_order({}, :desc).limit(1)
+      end
     end
   end
 
@@ -87,7 +93,11 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
       Object.new,
       [],
       'ASCC',
-    ].freeze
+    ]
+
+    if RUBY_VERSION.to_f >= 3.0
+      bad_directions << {}
+    end
 
     bad_directions.each do |direction|
       assert_raise ArgumentError do
@@ -97,11 +107,13 @@ class ActiveSortOrderTest < ActiveSupport::TestCase
 
     ### TEST UNIQUE CASES
 
-    ### HASH - this is allowed because its treated as keyword arguments
-    Post.sort_order("foobar", {}).limit(1).to_sql.include?("foobar ASC")
+    if RUBY_VERSION.to_f < 3.0
+      ### HASH - this is allowed because its treated as keyword arguments
+      Post.sort_order("foobar", {}).limit(1).to_sql.include?("foobar ASC")
 
-    assert_raise do
-      Post.sort_order("foobar", {}, {}).limit(1)
+      assert_raise do
+        Post.sort_order("foobar", {}, {}).limit(1)
+      end
     end
   end
 

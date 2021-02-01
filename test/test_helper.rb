@@ -41,16 +41,18 @@ if defined?(SQLite3)
   }
 elsif defined?(Mysql2)
   db_config = {
+    adapter: "mysql2",
     database: "active_sort_order_test",
     host: "localhost",
-    user: "root",
+    username: "root",
     password: "root123",
   }
 elsif defined?(PG)
   db_config = {
+    adapter: "pg",
     database: "active_sort_order_test",
     host: "localhost",
-    user: nil,
+    username: nil,
     password: nil,
   }
 end
