@@ -31,7 +31,7 @@ elsif defined?(Mysql2)
   }
 elsif defined?(PG)
   db_config = {
-    adapter: "pg",
+    adapter: "postgresql",
     database: "active_sort_order_test",
     host: "localhost",
     username: nil,
