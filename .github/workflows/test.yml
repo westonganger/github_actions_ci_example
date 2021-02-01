@@ -2,10 +2,10 @@ name: Tests
 on:
   push:
     branches:
-      - master
+      - '*'
   pull_request:
     branches:
-      - master
+      - '*'
 
 jobs:
   test_mysql:
@@ -26,17 +26,17 @@ jobs:
           ### RAILS VERSION TESTING
           ### DONT WORRY ABOUT TESTING ALL RUBY VERSIONS. THIS IS COVERED IN THE SQLITE3 TESTS
           - ruby: 2.6
-            gemfile: Gemfile.4.2.mysql2
+            gemfile: gemfiles/Gemfile.4.2.mysql2
           - ruby: 2.6
-            gemfile: Gemfile.5.0.mysql2
+            gemfile: gemfiles/Gemfile.5.0.mysql2
           - ruby: 2.6
-            gemfile: Gemfile.5.1.mysql2
+            gemfile: gemfiles/Gemfile.5.1.mysql2
           - ruby: 2.6
-            gemfile: Gemfile.5.2.mysql2
+            gemfile: gemfiles/Gemfile.5.2.mysql2
           - ruby: 2.6
-            gemfile: Gemfile.6.0.mysql2
+            gemfile: gemfiles/Gemfile.6.0.mysql2
           - ruby: 2.6
-            gemfile: Gemfile.6.1.mysql2
+            gemfile: gemfiles/Gemfile.6.1.mysql2
 
     env:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
@@ -80,17 +80,17 @@ jobs:
         ### RAILS VERSION TESTING
         ### DONT WORRY ABOUT TESTING ALL RUBY VERSIONS. THIS IS COVERED IN THE SQLITE3 TESTS
         - ruby: 2.6
-          gemfile: Gemfile.4.2.pg
+          gemfile: gemfiles/Gemfile.4.2.pg
         - ruby: 2.6
-          gemfile: Gemfile.5.0.pg
+          gemfile: gemfiles/Gemfile.5.0.pg
         - ruby: 2.6
-          gemfile: Gemfile.5.1.pg
+          gemfile: gemfiles/Gemfile.5.1.pg
         - ruby: 2.6
-          gemfile: Gemfile.5.2.pg
+          gemfile: gemfiles/Gemfile.5.2.pg
         - ruby: 2.6
-          gemfile: Gemfile.6.0.pg
+          gemfile: gemfiles/Gemfile.6.0.pg
         - ruby: 2.6
-          gemfile: Gemfile.6.1.pg
+          gemfile: gemfiles/Gemfile.6.1.pg
 
     env:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
