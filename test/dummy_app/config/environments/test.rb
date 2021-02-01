@@ -9,7 +9,10 @@ Dummy::Application.configure do
 
   # Configure static asset server for tests with Cache-Control for performance
   config.serve_static_files = true
-  config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
+
+  if Rails::VERSION::MAJOR >= 5
+    config.public_file_server.headers = true 
+  end
 
   # Log error messages when you accidentally call methods on nil
   config.whiny_nils = true
