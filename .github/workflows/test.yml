@@ -1,23 +1,21 @@
 name: Tests
 on:
   push:
-    branches:
-      - '*'
+    branches: ['*']
   pull_request:
-    branches:
-      - '*'
+    branches: ['*']
 
 jobs:
   test_mysql:
     runs-on: ubuntu-20.04
     services:
       mysql:
-        image: mysql:5.7
+        image: mariadb
         env:
           MYSQL_ROOT_PASSWORD: password
-        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 5
-        ports:
-          - 3306:3306
+          MYSQL_DATABASE: test
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        ports: ['3306:3306']
 
     strategy:
       fail-fast: false
@@ -60,6 +58,9 @@ jobs:
         bundle _1.17.3_ install
 
     - name: Run tests
+      env:
+        DATABASE_URL: mysql2://root:password@127.0.0.1:3306/test
+        RAILS_ENV: test
       run: bundle exec rake
 
   test_pg:
@@ -68,10 +69,10 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        options: "--health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5"
-        ports:
-        - 5432:5432
+          POSTGRES_DB: test
+        ports: ['5432:5432']
 
     strategy:
       fail-fast: false
@@ -106,7 +107,7 @@ jobs:
     - name: Setup database
       run: |
         sudo apt-get install -y postgresql-client
-        PGPASSWORD=postgres psql -c 'create database active_sort_order_test;' -U postgres -p 5432 -h localhost
+        PGPASSWORD=postgres psql -c 'create database test;' -U postgres -p 5432 -h localhost
 
     - name: Bundle
       run: |
@@ -114,7 +115,12 @@ jobs:
         bundle _1.17.3_ install
 
     - name: Run tests
-      run: bundle exec rake
+      env:
+        DATABASE_URL: postgres://postgres:password@localhost:5432/test
+        RAILS_ENV: test
+      run: |
+        #bundle exec rails db:test:prepare
+        bundle exec rails test
 
   test_sqlite:
     runs-on: ubuntu-20.04
@@ -147,4 +153,6 @@ jobs:
         bundle _1.17.3_ install
 
     - name: Run tests
-      run: bundle exec rake
+      run: |
+        #bundle exec rails db:test:prepare
+        bundle exec rails test
