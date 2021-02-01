@@ -51,13 +51,13 @@ jobs:
     - name: Setup database
       run: |
         sudo apt-get install -y mysql-client libmariadbclient-dev
-        sudo /etc/init.d/mysql start
+        sudo service mysql start
         mysql -e 'create database IF NOT EXISTS active_sort_order_test;' -u root --password=password -P 3306 -h 127.0.0.1
 
     - name: Bundle
       run: |
         gem install bundler:1.17.3
-        bundle install
+        bundle _1.17.3_ install
 
     - name: Run tests
       run: bundle exec rake
@@ -111,7 +111,7 @@ jobs:
     - name: Bundle
       run: |
         gem install bundler:1.17.3
-        bundle install
+        bundle _1.17.3_ install
 
     - name: Run tests
       run: bundle exec rake
@@ -144,7 +144,7 @@ jobs:
     - name: Bundle
       run: |
         gem install bundler:1.17.3
-        bundle install 
+        bundle _1.17.3_ install
 
     - name: Run tests
       run: bundle exec rake
