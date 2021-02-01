@@ -51,11 +51,12 @@ jobs:
     - name: Setup database
       run: |
         sudo apt-get install -y mysql-client libmariadbclient-dev
-        mysql -e 'create database IF NOT EXISTS test;' -u root --password=password -P 3306 -h 127.0.0.1
+        sudo /etc/init.d/mysql start
+        mysql -e 'create database IF NOT EXISTS active_sort_order_test;' -u root --password=password -P 3306 -h 127.0.0.1
 
     - name: Bundle
       run: |
-        gem install bundler
+        gem install bundler:1.17.3
         bundle install
 
     - name: Run tests
@@ -68,8 +69,7 @@ jobs:
         image: postgres
         env:
           POSTGRES_PASSWORD: postgres
-        options: "--health-cmd pg_isready --health-interval 10s --health-timeout 5s
-          --health-retries 5"
+        options: "--health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5"
         ports:
         - 5432:5432
 
@@ -106,11 +106,11 @@ jobs:
     - name: Setup database
       run: |
         sudo apt-get install -y postgresql-client
-        PGPASSWORD=postgres psql -c 'create database test;' -U postgres -p 5432 -h localhost
+        PGPASSWORD=postgres psql -c 'create database active_sort_order_test;' -U postgres -p 5432 -h localhost
 
     - name: Bundle
       run: |
-        gem install bundler
+        gem install bundler:1.17.3
         bundle install
 
     - name: Run tests
@@ -143,7 +143,7 @@ jobs:
 
     - name: Bundle
       run: |
-        gem install bundler
+        gem install bundler:1.17.3
         bundle install 
 
     - name: Run tests

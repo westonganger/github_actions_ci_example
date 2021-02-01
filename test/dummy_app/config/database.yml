@@ -14,8 +14,6 @@ default: &default
   adapter: postgresql
   database: active_sort_order_test
   host: localhost
-  username: nil
-  password: nil
 
 <% end %>
 
