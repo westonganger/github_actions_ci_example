@@ -16,31 +16,6 @@ end
 ### Instantiates Rails
 require File.expand_path("../dummy_app/config/environment.rb",  __FILE__)
 
-if defined?(SQLite3)
-  db_config = {
-    adapter: "sqlite3",
-    database: "db/test.sqlite3",
-  }
-elsif defined?(Mysql2)
-  db_config = {
-    adapter: "mysql2",
-    database: "active_sort_order_test",
-    host: "localhost",
-    username: "root",
-    password: "password",
-  }
-elsif defined?(PG)
-  db_config = {
-    adapter: "postgresql",
-    database: "active_sort_order_test",
-    host: "localhost",
-    username: nil,
-    password: nil,
-  }
-end
-
-ActiveRecord::Base.establish_connection(db_config.with_indifferent_access)
-
 require "rails/test_help"
 
 class ActiveSupport::TestCase
