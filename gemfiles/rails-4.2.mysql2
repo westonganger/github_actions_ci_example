@@ -1,0 +1,10 @@
+source "https://rubygems.org"
+
+gemspec
+
+gem "rake"
+gem "minitest"
+gem 'minitest-reporters'
+gem 'rails', '~> 4.2.11'
+gem 'mysql2'
+gem 'warning'

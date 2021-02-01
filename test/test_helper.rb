@@ -24,6 +24,29 @@ Minitest::Reporters.use!(
 
 require "minitest/autorun"
 
+if defined?(Sqlite3)
+  db_config = {
+    adapter: "sqlite3",
+    database: "test/dummy_app/db/test.sqlite3",
+  }
+elsif defined?(Mysql2)
+  db_config = {
+    database: "active_sort_order_test",
+    host: "localhost",
+    user: "root",
+    password: "root123",
+  }
+elsif defined?(PG)
+  db_config = {
+    database: "active_sort_order_test",
+    host: "localhost",
+    user: nil,
+    password: nil,
+  }
+end
+
+ActiveRecord::Base.establish_connection(db_config)
+
 # Run any available migration
 if ActiveRecord.gem_version >= Gem::Version.new("6.0")
   ActiveRecord::MigrationContext.new(File.expand_path("dummy_app/db/migrate/", __dir__), ActiveRecord::SchemaMigration).migrate
@@ -34,12 +57,12 @@ else
 end
 
 [Post].each do |klass|
-  ### REGULAR SQL
-  #ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{klass.table_name}")
-  
-  ### SQLITE
-  ActiveRecord::Base.connection.execute("DELETE FROM #{klass.table_name};")
-  ActiveRecord::Base.connection.execute("UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = '#{klass.table_name}';")
+  if defined?(Sqlite3)
+    ActiveRecord::Base.connection.execute("DELETE FROM #{klass.table_name};")
+    ActiveRecord::Base.connection.execute("UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = '#{klass.table_name}';")
+  else
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{klass.table_name}")
+  end
 end
 
 DATA = {}.with_indifferent_access
